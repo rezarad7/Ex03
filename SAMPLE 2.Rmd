@@ -1,0 +1,71 @@
+---
+title: "MTH 6312:methodes statistiques dapprentissage-Ex03"
+author: "Reza Rad"
+date: "September 23, 2015"
+output: html_document
+---
+1.Find an interesting project and a data set as your project. Write two paragraphs about your
+suggested projects. Argue why I must pay 50 $ to see the result of your data analysis.
+
+
+
+2.**(Where do you buy a house in Chicago?)** The crime data of Chicago are publicly available here
+[link](https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present/ijzp-q8t2)
+Take the subset of crimes commited in 2015 and plot a red dot (with enough transparency) for
+each theft appeared during 2015 until today on googlemap.
+Hint: Use get map, and ggmap functions from ggmap library to download the google map with
+appropriate zoom, longitude, and latitude. Then add red points using geom point function of
+ggplot2 library with transparency on your Chicago map. See the sample of the next page. PS:
+Using ggplot functions is not straightforward, check some simple examples first, before trying
+to overlay your points on the map.
+
+```{r,message=FALSE}
+library(MASS)
+require(ggplot2)
+require(ggmap)
+D=read.csv("C:/Users/BABAK/Desktop/Crimes.csv",header = TRUE)
+lon=D$Longitude
+lat=D$Latitude
+mymap= get_map(location="chicago",zoom=11,scale="auto",maptype="roadmap")
+ggmap(mymap)+
+  geom_point(data=as.data.frame(cbind(lon,lat)),aes(x=D$Longitude,y=D$Latitude),color="red",alpha=.6,size=1,shape=21)
+
+```
+
+
+3. Plot the univariate density of thefts of 2015 over latitude plot(density()) the sample of
+the next page.
+
+
+
+```{r,message=FALSE}
+require(ggplot2)
+require(ggmap)
+D=read.csv("C:/Users/BABAK/Desktop/Crimes.csv",header = TRUE)
+lon=D$Longitude
+lat=D$Latitude
+plot(density(na.omit(D)$Latitude),xlab="latitude",col="blue",main="Density over latitude")
+```
+
+
+4.Compute he 2D density using kde2d function of library MASS and use persp function to
+provide a 3D plot. See the sample of the next page.
+
+
+```{r,message=FALSE}
+library(MASS)
+require(ggplot2)
+require(ggmap)
+D=read.csv("C:/Users/BABAK/Desktop/Crimes.csv",header = TRUE)
+lon=D$Longitude
+lat=D$Latitude
+persp(kde2d(na.omit(D)$Latitude,na.omit(D)$Longitude),phi = 45, theta = 0,
+      xlab = "Lat", ylab = "Long",zlab = "density")
+
+```
+
+
+
+
+
+
